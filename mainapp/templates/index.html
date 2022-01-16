@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+{% endblock %}
+{% block scripts %}
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<script>
+    const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        direction: 'horizontal',
+        slidesPerView: 4.15,
+        spaceBetween: 20,
+        touchMove: true,
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Slider main container -->
+    <div class="swiper" style="width: 1100px; margin: 0 auto">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 1</p>
+            </a>
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 2</p>
+            </a>
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 3</p>
+            </a>
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 4</p>
+            </a>
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 5</p>
+            </a>
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 6</p>
+            </a>
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 7</p>
+            </a>
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 8</p>
+            </a>
+            <a href="#" class="swiper-slide cover">
+                <img src="https://via.placeholder.com/350" alt="" class="cover__image">
+                <p class="cover__text">Название песни 9</p>
+            </a>
+        </div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+{% endblock %}

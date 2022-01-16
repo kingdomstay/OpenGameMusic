@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>OpenGameMusic - Главная</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    {% block styles %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<header class="top-bar">
+    <div class="top-bar__wrapper container">
+        <a class="top-bar__brand" href="/">OpenGameMusic</a>
+        <nav class="top-bar__navigation">
+            <form action="/test" class="top-bar__form-search">
+                <input type="text" placeholder="Search" class="top-bar__input-search">
+            </form>
+            <ul class="top-bar__links">
+                <li>
+                    <a href="/upload" class="top-bar__link">Upload</a>
+                </li>
+                <li>
+                    <a href="/login" class="top-bar__link">Регистрация/Вход</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="main container">
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+
+</footer>
+<!-- Chrome fix -->
+<script></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
