@@ -2,11 +2,18 @@
 {% block title %}Вход{% endblock %}
 
 {% block content %}
-    <h1>Log-in</h1>
-    <p>Please, use the following form to log-in:</p>
-    <form action="." method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Log-in"></p>
-    </form>
+    <div class="container__form">
+        <h1>Вход</h1>
+        {% if message %}
+            <div class="warning-message">
+                <p class="warning-message__text">{{ message }}</p>
+            </div>
+        {% endif %}
+        <form action="." method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Log-in"></p>
+            <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a>.</p>
+        </form>
+    </div>
 {% endblock %}

@@ -1,0 +1,46 @@
+.swiper-button-disabled {
+  visibility: hidden;
+}
+.swiper-button-next {
+  right: 20px !important;
+  &:after {
+    content: 'navigate_next' !important;
+  }
+}
+.swiper-button-prev {
+  left: 20px !important;
+  &:after {
+    content: 'navigate_before' !important;
+  }
+}
+.swiper-button-next, .swiper-button-prev {
+  aspect-ratio: 1/1;
+  &:after {
+    background: #ffffff;
+    border: 1px solid #dedede;
+    border-radius: 6px;
+    color: #000000 !important;
+    font-family: "Material Icons", sans-serif !important;
+  }
+  &:hover {
+    &:after {
+      color: #ff3d00 !important;
+      border: 1px solid #ff3d00;
+    }
+  }
+}
+
+
+
+.cover {
+  color: #000000;
+  text-decoration: none;
+  &:hover {
+    color: #ff3d00;
+  }
+}
+.cover__image {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
