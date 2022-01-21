@@ -1,3 +1,6 @@
+import json
+import this
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -135,3 +138,16 @@ def user_register(request):
     else:
         user_form = UserRegistrationForm()
     return render(request, 'register.html', {'user_form': user_form})
+
+
+@login_required
+def like(request, ids):
+    user = request.user
+    track = get_object_or_404(Track, id=ids)
+    print(track)
+
+    if track.likes.filter(id=user.id).exists():
+        track.likes.remove(user)
+    else:
+        track.likes.add(user)
+    return redirect('track-detail', pk=ids)

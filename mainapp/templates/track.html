@@ -66,13 +66,13 @@
         <img src="/static/cover.png" alt="" class="hero__cover">
     </div>
     <div class="stats">
-        <p class="stats__item"><span class="material-icons">play_arrow</span> <span>26.4M</span></p>
-        <p class="stats__item"><span class="material-icons">favorite</span> <span>12.8M</span></p>
+        <p class="stats__item"><span class="material-icons">play_arrow</span> <span>12</span></p>
+        <p class="stats__item"><span class="material-icons">favorite</span> <span>{{ track.total_likes }}</span></p>
     </div>
     <div class="track-actions">
         {% if user.is_authenticated %}
             {% if user != track.published_by %}
-                <button class="track-actions__btn track-actions__btn-like"></button>
+                <a href="{% url 'like' track.id %}" class="track-actions__btn track-actions__btn-like"></a>
             {% endif %}
         {% endif %}
         {% if request.user.groups.get.name == 'Developers' %}
