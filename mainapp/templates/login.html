@@ -4,7 +4,14 @@
 {% block content %}
     <div class="container__form">
         <h1>Вход</h1>
-        {% if message %}
+        {% if messages %}
+        {% for message in messages %}
+            <div class="warning-message">
+                <p class="warning-message__text">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if message %}
             <div class="warning-message">
                 <p class="warning-message__text">{{ message }}</p>
             </div>
@@ -12,8 +19,8 @@
         <form action="." method="post">
             {{ form.as_p }}
             {% csrf_token %}
-            <p><input type="submit" value="Log-in"></p>
-            <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a>.</p>
+            <p><input type="submit" value="Войти"></p>
+            <p class="form__footer-text">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a></p>
         </form>
     </div>
 {% endblock %}

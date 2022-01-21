@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Поиск по трекам{% endblock %}
+
+{% block content %}
+    {% if track_list %}
+        <h1>Найдено {{ track_list | length }} по запросу:</h1>
+        <ul>
+        {% for track in track_list %}
+            <li>
+                <a class="link" href="{{ track.get_absolute_url }}">{{ track.published_by.username }} - {{ track.name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <h1>По данному запросу ничего не найдено</h1>
+    {% endif %}
+{% endblock %}

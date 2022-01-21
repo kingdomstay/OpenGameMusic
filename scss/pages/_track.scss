@@ -81,6 +81,7 @@
   display: flex;
   align-items: center;
   font-size: .8rem;
+  cursor: pointer;
   .material-icons {
     font-size: 1rem;
   }
@@ -144,4 +145,7 @@
       content: 'Download';
     }
   }
+}
+wave {
+  overflow: hidden !important;
 }

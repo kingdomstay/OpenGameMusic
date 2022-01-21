@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}{{ track.name }}{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/wavesurfer.js"></script>
+<script>
+    let loadedMusic = false
+    let pause = true
+    const playButton = document.querySelector('.hero__play-button')
+
+    var wavesurfer = WaveSurfer.create({
+        container: '.hero__waves',
+        waveColor: '#dac5b4',
+        progressColor: '#F0EAE5',
+        barWidth: 2,
+        cursorWidth: 2,
+        width: 1000,
+        height: 300,
+        cursorColor: '#FFFFFF'
+    });
+    wavesurfer.load('{{ track.track_url }}')
+    wavesurfer.on('ready', function () {
+        musicLoaded()
+    });
+    wavesurfer.on('finish', function () {
+        toggleMusic()
+    });
+
+    playButton.addEventListener("click", () => {
+        if (!loadedMusic) {
+            return 0
+        }
+        toggleMusic()
+    })
+
+    function musicLoaded() {
+        loadedMusic = true
+        playButton.classList.remove('hero__play-button_disabled')
+    }
+    function toggleMusic() {
+        if (!loadedMusic) {
+            return 0
+        }
+        if (pause) {
+            wavesurfer.play()
+            playButton.classList.add('hero__play-button_pause')
+        } else {
+            wavesurfer.pause()
+            playButton.classList.remove('hero__play-button_pause')
+        }
+        pause = !pause
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+    <div class="hero">
+        <div class="hero__content">
+            <button class="hero__play-button hero__play-button_disabled"></button>
+            <div class="hero__description">
+                <span class="hero__track-name">{{ track.name }}</span>
+                <span class="hero__author-name">{{ track.published_by }}</span>
+                <div class="hero__waves"></div>
+            </div>
+        </div>
+        <img src="/static/cover.png" alt="" class="hero__cover">
+    </div>
+    <div class="stats">
+        <p class="stats__item"><span class="material-icons">play_arrow</span> <span>26.4M</span></p>
+        <p class="stats__item"><span class="material-icons">favorite</span> <span>12.8M</span></p>
+    </div>
+    <div class="track-actions">
+        {% if user.is_authenticated %}
+            {% if user != track.published_by %}
+                <button class="track-actions__btn track-actions__btn-like"></button>
+            {% endif %}
+        {% endif %}
+        {% if request.user.groups.get.name == 'Developers' %}
+            <a class="track-actions__btn track-actions__btn-download" href="{{ track.track_url }}" download="{{ track.name }}"></a>
+        {% endif %}
+    </div>
+{% endblock %}
