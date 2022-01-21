@@ -1,27 +1,94 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.core.files.storage import default_storage
+from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views import generic
 
-# Create your views here.
-from mainapp.forms import LoginForm, UserRegistrationForm
+from mainapp.forms import LoginForm, UserRegistrationForm, AristUploadingTrackForm
+
+from django.http import Http404
+
+import pyrebase
+import os
+
+from mainapp.models import Track
+
+config = {
+    "apiKey": "AIzaSyDcr5w4d3anyiTo7uHHpll0QDlFP_X0ZGA",
+    "authDomain": "opengamemusic-d3213.firebaseapp.com",
+    "storageBucket": "opengamemusic-d3213.appspot.com",
+    "messagingSenderId": "990394749980",
+    "appId": "1:990394749980:web:2987d8ec8632fb34c13bd9",
+    "databaseURL": "https://opengamemusic-d3213-default-rtdb.europe-west1.firebasedatabase.app/"
+}
+
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
 
 
-def index(request):
-    """
-    Функция отображения для домашней страницы сайта.
-    """
+def check_user_able_to_see_page(*groups):
+    def decorator(function):
+        def wrapper(request, *args, **kwargs):
+            if request.user.groups.filter(name__in=groups).exists():
+                return function(request, *args, **kwargs)
+            raise Http404
 
-    return render(
-        request,
-        'index.html'
-    )
+        return wrapper
+
+    return decorator
 
 
-@login_required
+class TracksListView(generic.ListView):
+    model = Track
+    template_name = 'index.html'
+
+
+class TracksDetailView(generic.DetailView):
+    model = Track
+    template_name = 'track.html'
+
+
+class TracksSearchView(generic.ListView):
+    model = Track
+    template_name = 'search.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        track_list = Track.objects.filter(
+            Q(name__icontains=query) | Q(published_by__username__icontains=query)
+        )
+        return track_list
+
+
+@check_user_able_to_see_page("Artists")
 def upload(request):
-    return 'test'
+    if not request.user.is_active:
+        return redirect('index')
+    if request.method == 'POST':
+        form = AristUploadingTrackForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            file_save = default_storage.save(file.name, file)
+            storage.child("tracks/" + request.user.username + '/' + file.name).put("media/" + file.name)
+            delete = default_storage.delete(file.name)
+
+            track = form.save(commit=False)
+
+            url = storage.child("tracks/" + request.user.username + '/' + file.name).get_url('5E8D0889-D367-49ED-8C7F'
+                                                                                             '-0F3E29A04273')
+            track.published_by = request.user
+            track.track_url = url
+            track.name = form.cleaned_data['title']
+            track.save()
+            messages.success(request, 'Трек был успешно загружен на сервер и опубликован на сайте')
+            return redirect('index')
+    else:
+        form = AristUploadingTrackForm()
+    return render(request, 'upload.html', {'form': form})
 
 
 def user_login(request):
@@ -63,6 +130,7 @@ def user_register(request):
             # Добавляем пользователя в ту или иную группу
             group = Group.objects.get(name=user_form.cleaned_data['group'])
             new_user.groups.add(group)
+            messages.success(request, 'Теперь вы можете войти в аккаунт')
             return redirect('login')
     else:
         user_form = UserRegistrationForm()

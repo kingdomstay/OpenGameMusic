@@ -2,11 +2,13 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
-    <h1>Register</h1>
-    <p>Please, use the following form to log-in:</p>
-    <form action="." method="post">
-        {{ user_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Create my account"></p>
-    </form>
+    <div class="container__form">
+        <h1>Регистрация</h1>
+        <form class="form" action="." method="post">
+            {{ user_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Зарегистрироваться"></p>
+            <p class="form__footer-text">Или <a href="{% url 'login' %}">войдите</a> в свой аккаунт</p>
+        </form>
+    </div>
 {% endblock %}
