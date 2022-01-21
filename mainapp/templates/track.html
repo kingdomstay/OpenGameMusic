@@ -50,6 +50,12 @@
         }
         pause = !pause
     }
+
+    const request = new XMLHttpRequest()
+    request.open("POST", "{% url 'view'  ids2=track.id %}");
+    playButton.addEventListener('click', function() {
+        request.send(JSON.stringify({track_id:"{{ track.id }}"}));
+    });
 </script>
 {% endblock %}
 
@@ -66,16 +72,12 @@
         <img src="/static/cover.png" alt="" class="hero__cover">
     </div>
     <div class="stats">
-        <p class="stats__item"><span class="material-icons">play_arrow</span> <span>12</span></p>
+        <p class="stats__item"><span class="material-icons">play_arrow</span> <span>{{ track.total_views }}</span></p>
         <p class="stats__item"><span class="material-icons">favorite</span> <span>{{ track.total_likes }}</span></p>
     </div>
     <div class="track-actions">
-        {% if user.is_authenticated %}
-            {% if user != track.published_by %}
-                <a href="{% url 'like' track.id %}" class="track-actions__btn track-actions__btn-like"></a>
-            {% endif %}
-        {% endif %}
         {% if request.user.groups.get.name == 'Developers' %}
+            <a href="{% url 'like' track.id %}" class="track-actions__btn track-actions__btn-like"></a>
             <a class="track-actions__btn track-actions__btn-download" href="{{ track.track_url }}" download="{{ track.name }}"></a>
         {% endif %}
     </div>

@@ -13,6 +13,7 @@ class Track(models.Model):
     published_by = models.ForeignKey(User, on_delete=models.CASCADE, help_text='Кем опубликовано')
     publish = models.DateTimeField(default=timezone.now)
     likes = models.ManyToManyField(User, related_name='likes')
+    views = models.ManyToManyField(User, related_name='views')
 
     class Meta:
         ordering = ('-publish',)
@@ -20,6 +21,10 @@ class Track(models.Model):
     @property
     def total_likes(self):
         return self.likes.count()
+
+    @property
+    def total_views(self):
+        return self.views.count()
 
     def __str__(self):
         return self.name

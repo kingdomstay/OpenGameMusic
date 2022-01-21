@@ -140,7 +140,7 @@ def user_register(request):
     return render(request, 'register.html', {'user_form': user_form})
 
 
-@login_required
+@check_user_able_to_see_page("Developers")
 def like(request, ids):
     user = request.user
     track = get_object_or_404(Track, id=ids)
@@ -151,3 +151,14 @@ def like(request, ids):
     else:
         track.likes.add(user)
     return redirect('track-detail', pk=ids)
+
+
+@check_user_able_to_see_page("Developers")
+def views(request, ids2):
+    if request.method == "POST":
+        user = request.user
+        track = get_object_or_404(Track, id=ids2)
+        if not track.views.filter(id=user.id).exists():
+            track.views.add(user)
+    ctx = {'views_count': track.total_views}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')

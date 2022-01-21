@@ -11,5 +11,6 @@ urlpatterns = [
     path('register/', views.user_register, name='register'),
     path('logout/', views.user_logout, name='logout'),
     path('search/', views.TracksSearchView.as_view(), name='search'),
-    path('likes/<int:ids>', views.like, name='like')
+    path('likes/<int:ids>', views.like, name='like'),
+    path('views/<int:ids2>', views.views, name='view')
 ]
